@@ -1,12 +1,16 @@
 package com.valdir.os.dtos;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.valdir.os.domain.Cliente;
+import com.valdir.os.domain.enuns.Perfil;
 
 public class ClienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -26,6 +30,8 @@ public class ClienteDTO implements Serializable {
 	@NotEmpty(message = "O campo SENHA é requerido")
 	private String senha;
 
+	private Set<Integer> perfis = new HashSet<>();
+
 	public ClienteDTO() {
 		super();
 	}
@@ -37,6 +43,7 @@ public class ClienteDTO implements Serializable {
 		this.cpf = obj.getCpf();
 		this.telefone = obj.getTelefone();
 		this.senha = obj.getSenha();
+		this.perfis = obj.getPerfis().stream().map(x -> x.getCod()).collect(Collectors.toSet());
 	}
 
 	public Integer getId() {
@@ -77,6 +84,14 @@ public class ClienteDTO implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public Set<Perfil> getPerfis() {
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
 	}
 
 }

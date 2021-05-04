@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.valdir.os.domain.Cliente;
 import com.valdir.os.domain.OS;
 import com.valdir.os.domain.Tecnico;
+import com.valdir.os.domain.enuns.Perfil;
 import com.valdir.os.domain.enuns.Prioridade;
 import com.valdir.os.domain.enuns.Status;
 import com.valdir.os.repositories.ClienteRepository;
@@ -29,6 +30,7 @@ public class DBService {
 
 	public void instanciaDB() {
 		Tecnico t1 = new Tecnico(null, "Valdir Cezar", "144.785.300-84", "(88) 98888-8888", encoder.encode("123"));
+		t1.addPerfil(Perfil.ADMIN);
 		Tecnico t2 = new Tecnico(null, "Linus Torvalds", "641.760.040-88", "(88) 94545-4545", encoder.encode("1234"));
 		Tecnico t3 = new Tecnico(null, "Alan Turing", "332.040.820-83", "(88) 96345-9874", encoder.encode("1235"));
 		Tecnico t4 = new Tecnico(null, "Richard Stallman", "756.192.280-96", "(88) 98745-8542", encoder.encode("1236"));
