@@ -27,7 +27,7 @@ public class TecnicoDTO implements Serializable {
 	@NotEmpty(message = "O campo TELEFONE é requerido")
 	private String telefone;
 
-	@NotEmpty(message = "O campo TELEFONE é requerido")
+	@NotEmpty(message = "O campo SENHA é requerido")
 	private String senha;
 
 	private Set<Integer> perfis = new HashSet<>();

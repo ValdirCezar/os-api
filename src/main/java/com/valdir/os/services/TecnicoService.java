@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.valdir.os.domain.Pessoa;
 import com.valdir.os.domain.Tecnico;
+import com.valdir.os.domain.enuns.Perfil;
 import com.valdir.os.dtos.TecnicoDTO;
 import com.valdir.os.repositories.PessoaRepository;
 import com.valdir.os.repositories.TecnicoRepository;
@@ -53,8 +54,14 @@ public class TecnicoService {
 			throw new DataIntegratyViolationException("CPF já cadastrado na base de dados!");
 		}
 
-		return repository.save(new Tecnico(null, objDTO.getNome(), objDTO.getCpf(), objDTO.getTelefone(),
-				encoder.encode(objDTO.getSenha())));
+		Tecnico newTec = new Tecnico(null, objDTO.getNome(), objDTO.getCpf(), objDTO.getTelefone(),
+				encoder.encode(objDTO.getSenha()));
+
+		if(objDTO.getPerfis().contains(Perfil.ADMIN)) {
+			newTec.addPerfil(Perfil.ADMIN);
+		}
+		
+		return repository.save(newTec);
 	}
 
 	/*
@@ -70,6 +77,9 @@ public class TecnicoService {
 		oldObj.setNome(objDTO.getNome());
 		oldObj.setCpf(objDTO.getCpf());
 		oldObj.setTelefone(objDTO.getTelefone());
+		if(objDTO.getPerfis().contains(Perfil.ADMIN)) {
+			oldObj.addPerfil(Perfil.ADMIN);
+		}
 		return repository.save(oldObj);
 	}
 
@@ -90,7 +100,7 @@ public class TecnicoService {
 	 * Busca Tecnico pelo CPF
 	 */
 	private Pessoa findByCPF(TecnicoDTO objDTO) {
-		Pessoa obj = pessoaRepository.findByCPF(objDTO.getCpf());
+		Pessoa obj = pessoaRepository.findByCPF(objDTO.getCpf()); 
 
 		if (obj != null) {
 			return obj;
