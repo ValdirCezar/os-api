@@ -2,6 +2,8 @@ package com.valdir.os.security;
 
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(JWTUtil.class);
 
 	@Value("${jwt.secret}")
 	private String secret;
@@ -22,6 +26,7 @@ public class JWTUtil {
 	 * Method to generate a token
 	 */
 	public String generateToken(String cpf) {
+		LOG.info("JWTUtil - GERANDO TOKEN");
 
 		/*
 		 * We will use the jwt now
@@ -36,6 +41,7 @@ public class JWTUtil {
 	}
 
 	public boolean tokenValido(String token) {
+		LOG.info("JWTUtil - VARIFICANDO SE TOKEN É VÁLIDO");
 		// Claims stores token claims
 		Claims claims = getClaimsToken(token);
 
@@ -55,6 +61,7 @@ public class JWTUtil {
 	 * This methoid will get the claims from token
 	 */
 	private Claims getClaimsToken(String token) {
+		LOG.info("JWTUtil - OBTENDO CLAIMS DO TOKEN");
 		try {
 			return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
 		} catch (Exception e) {
@@ -63,6 +70,7 @@ public class JWTUtil {
 	}
 
 	public String getUsername(String token) {
+		LOG.info("JWTUtil - OBTENDO USERNAME DO TOKEN");
 		Claims claims = getClaimsToken(token);
 		if (claims != null) {
 			return claims.getSubject();

@@ -23,7 +23,7 @@ import com.valdir.os.dtos.CredenciaisDTO;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
+	private static final Logger LOG = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
 	private AuthenticationManager authenticationManager;
 
@@ -40,29 +40,29 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-		logger.info("REQUISIÇÃO CHEGOU NO FILTRO DE AUTENTICAÇÃO");
+		LOG.info("JWTAuthenticationFilter - REQUISIÇÃO CHEGOU NO FILTRO DE AUTENTICAÇÃO");
 		
 		/*
 		 * try authentication and case we have an error will send a new exception
 		 */
 		try {
-			logger.info("Transformando dados da requisição em CredenciaisDTO");
+			LOG.info("JWTAuthenticationFilter - TRANSFORMANDO DADOS DA REQUISIÇÃO EM CredenciaisDTO");
 			CredenciaisDTO creds = new ObjectMapper().readValue(request.getInputStream(), CredenciaisDTO.class);
 
-			logger.info("Criando token de autenticação");
+			LOG.info("JWTAuthenticationFilter - GERANDO TOKEN DE AUTENTICAÇÃO");
 			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 					creds.getCpf(), creds.getSenha(), new ArrayList<>());
 
-			logger.info("Tentando autenticar");
+			LOG.info("JWTAuthenticationFilter - TENTANDO AUTENTICAR");
 			Authentication auth = authenticationManager.authenticate(authenticationToken);
 			
-			logger.info("REQUISIÇÃO PASSOU NO FILTRO DE AUTENTICAÇÃO");
+			LOG.info("JWTAuthenticationFilter - REQUISIÇÃO PASSOU NO FILTRO DE AUTENTICAÇÃO");
 			return auth;
 		} catch (Error | IOException e) {
-			logger.info(e.getMessage());
+			LOG.info("JWTAuthenticationFilter - FALHA NA AUTENTICAÇÃO");
 			throw new RuntimeErrorException((Error) e);
 		}
-	}
+	} 
 
 	/*
 	 * Case successful authentication the object auth will be sended to method
@@ -72,19 +72,18 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 
-		logger.info("REALIZANDO PARSE PARA UserSS");
+		LOG.info("JWTAuthenticationFilter - REALIZANDO PARSE PARA UserSS");
 		String cpf = ((UserSS) authResult.getPrincipal()).getUsername();
-		
-		logger.info("GERANDO TOKEN");
+
 		String token = jwtUtil.generateToken(cpf);
 		
-		logger.info("ADICIONANDO TOKEN NO HEADER DA RESPOSTA");
+		LOG.info("JWTAuthenticationFilter - ADICIONANDO TOKEN NO HEADER DA RESPOSTA");
 		response.addHeader("Authorization", "Bearer " + token);
 	}	
 
 	@Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        logger.info("Authentication failed");
+        LOG.info("JWTAuthenticationFilter - FALHA NA AUTENTICAÇÃO");
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.TEXT_PLAIN_VALUE);
