@@ -9,6 +9,8 @@ import javax.persistence.Id;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public abstract class Pessoa implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -21,17 +23,21 @@ public abstract class Pessoa implements Serializable {
 	@CPF
 	private String cpf;
 	private String telefone;
+	
+	@JsonIgnore
+	private String senha;
 
 	public Pessoa() {
 		super();
 	}
 
-	public Pessoa(Integer id, String nome, String cpf, String telefone) {
+	public Pessoa(Integer id, String nome, String cpf, String telefone, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.telefone = telefone;
+		this.senha = senha;
 	}
 
 	public Integer getId() {
@@ -64,6 +70,16 @@ public abstract class Pessoa implements Serializable {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+	
+	
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	@Override

@@ -12,16 +12,19 @@ public class TecnicoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
-	
+
 	@NotEmpty(message = "O campo NOME é requerido")
 	private String nome;
 
 	@CPF
 	@NotEmpty(message = "O campo CPF é requerido")
 	private String cpf;
-	
+
 	@NotEmpty(message = "O campo TELEFONE é requerido")
 	private String telefone;
+
+	@NotEmpty(message = "O campo TELEFONE é requerido")
+	private String senha;
 
 	public TecnicoDTO() {
 		super();
@@ -33,6 +36,7 @@ public class TecnicoDTO implements Serializable {
 		this.nome = obj.getNome();
 		this.cpf = obj.getCpf();
 		this.telefone = obj.getTelefone();
+		this.senha = obj.getSenha();
 	}
 
 	public Integer getId() {
@@ -65,6 +69,14 @@ public class TecnicoDTO implements Serializable {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 }
