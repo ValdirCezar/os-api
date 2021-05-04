@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +22,6 @@ import com.valdir.os.domain.Cliente;
 import com.valdir.os.dtos.ClienteDTO;
 import com.valdir.os.services.ClienteService;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/clientes")
 public class ClienteResource {
@@ -71,7 +69,7 @@ public class ClienteResource {
 		ClienteDTO newObj = new ClienteDTO(service.update(id, objDTO));
 		return ResponseEntity.ok().body(newObj);
 	}
-	
+
 	/*
 	 * Delete Cliente
 	 */
@@ -82,13 +80,3 @@ public class ClienteResource {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-

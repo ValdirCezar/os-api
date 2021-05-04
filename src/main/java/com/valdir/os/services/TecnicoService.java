@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.valdir.os.domain.Pessoa;
@@ -21,9 +22,12 @@ public class TecnicoService {
 
 	@Autowired
 	private TecnicoRepository repository;
-	
+
 	@Autowired
 	private PessoaRepository pessoaRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	/*
 	 * Busca Tecnico pelo ID
@@ -49,7 +53,8 @@ public class TecnicoService {
 			throw new DataIntegratyViolationException("CPF já cadastrado na base de dados!");
 		}
 
-		return repository.save(new Tecnico(null, objDTO.getNome(), objDTO.getCpf(), objDTO.getTelefone()));
+		return repository.save(new Tecnico(null, objDTO.getNome(), objDTO.getCpf(), objDTO.getTelefone(),
+				encoder.encode(objDTO.getSenha())));
 	}
 
 	/*
