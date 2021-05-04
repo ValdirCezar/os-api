@@ -20,7 +20,6 @@ public class UserSS implements UserDetails {
 
 	public UserSS() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public UserSS(Integer id, String cpf, String senha, Set<Perfil> perfis) {

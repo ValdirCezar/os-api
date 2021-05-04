@@ -17,6 +17,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.valdir.os.security.JWTAuthenticationFilter;
+import com.valdir.os.security.JWTUtil;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -34,6 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private JWTUtil jwtUtil;
 
 	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**" };
 
@@ -50,10 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// Enabling cors and disabling csrf
 		http.cors().and().csrf().disable();
-
-		http.authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
-
-		// Ensuring that our application will not create a user session
+		http.authorizeRequests()
+			.antMatchers(PUBLIC_MATCHERS).permitAll()
+			.anyRequest().authenticated();
+		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
