@@ -79,6 +79,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		
 		LOG.info("JWTAuthenticationFilter - ADICIONANDO TOKEN NO HEADER DA RESPOSTA");
 		response.addHeader("Authorization", "Bearer " + token);
+		response.addHeader("access-control-expose-headers", "Authorization");
 	}	
 
 	@Override
