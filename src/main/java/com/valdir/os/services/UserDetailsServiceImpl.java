@@ -22,14 +22,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String cpf) throws UsernameNotFoundException {
-		logger.info("CHEGOU NO USER DETAILS SERVICE");
+		logger.info("UserDetailsServiceImpl - CHEGOU NO USER DETAILS SERVICE");
 		Pessoa obj = repository.findByCPF(cpf);
 
 		if (obj == null) {
+			logger.info("UserDetailsServiceImpl - USUÁRIO OU SENHA INVÁLIDOS");
 			throw new UsernameNotFoundException(cpf);
 		}
 
-		logger.info("PASSOU NO USER DETAILS SERVICE");
+		logger.info("UserDetailsServiceImpl - PASSOU NO USER DETAILS SERVICE");
 		UserSS user = new UserSS(obj.getId(), obj.getCpf(), obj.getSenha(), obj.getPerfis());
 		return user;
 	}
