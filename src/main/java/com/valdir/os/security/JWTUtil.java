@@ -41,7 +41,7 @@ public class JWTUtil {
 	}
 
 	public boolean tokenValido(String token) {
-		LOG.info("JWTUtil - VARIFICANDO SE TOKEN É VÁLIDO");
+		LOG.info("JWTUtil - VERIFICANDO SE TOKEN É VÁLIDO");
 		// Claims stores token claims
 		Claims claims = getClaimsToken(token);
 

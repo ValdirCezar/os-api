@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +28,8 @@ import com.valdir.os.services.ClienteService;
 @RestController
 @RequestMapping(value = "/clientes")
 public class ClienteResource {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(ClienteResource.class);
 
 	@Autowired
 	private ClienteService service;
@@ -35,6 +39,7 @@ public class ClienteResource {
 	 */
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ClienteDTO> findById(@PathVariable Integer id) {
+		LOG.info("Resource - BUSCANDO CLIENTE POR ID");
 		ClienteDTO objDTO = new ClienteDTO(service.findById(id));
 		return ResponseEntity.ok().body(objDTO);
 	}
@@ -44,6 +49,7 @@ public class ClienteResource {
 	 */
 	@GetMapping
 	public ResponseEntity<List<ClienteDTO>> findAll() {
+		LOG.info("Resource - BUSCANDO TODOS OS CLIENTES DO BANCO");
 		List<ClienteDTO> listDTO = service.findAll().stream().map(obj -> new ClienteDTO(obj))
 				.collect(Collectors.toList());
 
@@ -55,6 +61,7 @@ public class ClienteResource {
 	 */
 	@PostMapping
 	public ResponseEntity<ClienteDTO> create(@Valid @RequestBody ClienteDTO objDTO) {
+		LOG.info("Resource - CRIANDO NOVO CLIENTE");
 		Cliente newObj = service.create(objDTO);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
@@ -67,6 +74,7 @@ public class ClienteResource {
 	 */
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ClienteDTO> update(@PathVariable Integer id, @Valid @RequestBody ClienteDTO objDTO) {
+		LOG.info("Resource - ATUALIZANDO CLIENTE");
 		ClienteDTO newObj = new ClienteDTO(service.update(id, objDTO));
 		return ResponseEntity.ok().body(newObj);
 	}
@@ -77,6 +85,7 @@ public class ClienteResource {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		LOG.info("Resource - DELETANDO CLIENTE");
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
