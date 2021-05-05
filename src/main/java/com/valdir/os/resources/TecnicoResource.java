@@ -48,6 +48,7 @@ public class TecnicoResource {
 	/*
 	 * Lista todos objetos do tipo Tecnico na base
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<TecnicoDTO>> findAll() {
 		log.info("RESOURCE - BUSCANDO TODOS OD TÉCNICOS");
