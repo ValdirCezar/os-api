@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.valdir.os.domain.Tecnico;
 import com.valdir.os.domain.enuns.Perfil;
 
@@ -27,6 +28,7 @@ public class TecnicoDTO implements Serializable {
 	@NotEmpty(message = "O campo TELEFONE é requerido")
 	private String telefone;
 
+	@JsonIgnore
 	@NotEmpty(message = "O campo SENHA é requerido")
 	private String senha;
 
