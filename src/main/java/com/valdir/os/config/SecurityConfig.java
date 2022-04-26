@@ -77,11 +77,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	/*
 	 * By default the cors is bloqued on API when spring security is added and to
 	 * disable cors we need to make it explicit
+	 *
+	 * Obs: Ajustado após atualização do Spring
 	 */
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
 
